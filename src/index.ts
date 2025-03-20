@@ -1,5 +1,6 @@
 import { serve } from '@hono/node-server'
 import { Hono } from 'hono'
+import { View } from './view.js'
 
 const app = new Hono()
 
@@ -16,6 +17,8 @@ app.post('/posts', (c) => c.text('Created!', 201))
 app.delete('/posts/:id', (c) => 
   c.text(`Deleted post with id: ${c.req.param('id')}`)
 )
+
+app.get('/page', (c) => c.html(View()))
 
 serve({
   fetch: app.fetch,
