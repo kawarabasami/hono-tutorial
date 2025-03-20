@@ -1,6 +1,7 @@
 import { serve } from '@hono/node-server'
 import { Hono } from 'hono'
 import { View } from './view.js'
+import { basicAuth } from 'hono/basic-auth'
 
 const app = new Hono()
 
@@ -18,7 +19,15 @@ app.delete('/posts/:id', (c) =>
   c.text(`Deleted post with id: ${c.req.param('id')}`)
 )
 
+// HTML(JSX)を返すサンプル
 app.get('/page', (c) => c.html(View()))
+
+// 生レスポンスを返すサンプル
+app.get('/raw', (c) => new Response('Good morning!'))
+
+// middleware basic認証
+app.use('/admin/*', basicAuth({username: 'admin', password: 'password'}))
+app.get('/admin', (c) => c.text('Welcome to admin page!'))
 
 serve({
   fetch: app.fetch,
