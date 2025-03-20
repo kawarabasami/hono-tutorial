@@ -7,6 +7,16 @@ app.get('/', (c) => {
   return c.text('Hello Hono!')
 })
 
+app.get('/api/hello', (c) => {
+  return c.json({ok: true, message: 'Hello Hono!'})
+})
+
+app.post('/posts', (c) => c.text('Created!', 201))
+
+app.delete('/posts/:id', (c) => 
+  c.text(`Deleted post with id: ${c.req.param('id')}`)
+)
+
 serve({
   fetch: app.fetch,
   port: 3000
